@@ -190,6 +190,10 @@ let localPlan=JSON.parse(localStorage.getItem("plan"))
 localPlan.forEach(item => {
 list.push(item)
 });
+if (!(list==[])) {
+  document.querySelector('.todos_clear_btn').classList.remove('hidden')
+  document.querySelector('.todos_clear_btn').classList.add('block')
+}
 let removedPlan=JSON.parse(localStorage.getItem("removed"))
 removedPlan.forEach(item => {
   removedArr.push(item)
