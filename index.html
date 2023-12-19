@@ -33,10 +33,10 @@
                 <div class="tab_section w-full">
                 
                     <div class="plan_type_cont w-full flex gap-0">
-                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" onclick="openCity('todos')">All</button>
-                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" onclick="openCity('new')">New</button>
-                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" onclick="openCity('removed')">Removed</button>
-                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" onclick="openCity('done')">Done</button>
+                      <button class="plan__case__btn w-full py-4 px-6  mx-0 bg-stone-300 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" id="todo_btn" onclick="openPan('todos', 'todo_btn')">All</button>
+                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" id="new_btn" onclick="openPan('new', 'new_btn')">New</button>
+                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" id="removed_btn" onclick="openPan('removed', 'removed_btn')">Removed</button>
+                      <button class="plan__case__btn w-full py-4 px-6 bg-stone-400 mx-0 focus:bg-stone-300 hover:bg-stone-300 transition-all delay-100" id="done_btn" onclick="openPan('done', 'done_btn')">Done</button>
                     </div>
                     <div id="new" class="plan" style="display:none">
                       

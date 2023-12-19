@@ -3,11 +3,13 @@ const todos = document.getElementById("todos");
 const newTab=document.getElementById('new')
 const doneTab=document.getElementById('done')
 const removeTab=document.getElementById('removed')
-const fruits = ["Banana", "Orange", "Apple", "Mango"];
-fruits.splice(2, 1, "Lemon", "Kiwi");
-console.log(fruits);
-
 const list =[];
+function keyInt(index, event) {
+  console.log(index, event.target.value)
+  list[index].title=event.target.value
+console.log(list);
+saveTask()
+}
  document.querySelector('.todos_clear_btn').classList.add('hidden')
 const add = (event) => {
   newTab.style.display = "none"
@@ -18,27 +20,32 @@ const add = (event) => {
   list.unshift({
     title: event.target.input.value,
     isCompleted: false,
-    // status: "removed" | "new" | "done",
   });
   updateDOM();
   saveTask()
   document.querySelector('.todos_clear_btn').classList.remove('hidden')
   document.querySelector('.todos_clear_btn').classList.add('block')
   event.target.input.value = "";
+  document.getElementById('todo_btn').classList.remove('bg-stone-400')
+  document.getElementById('todo_btn').classList.add('bg-stone-300')
+  document.getElementById('new_btn').classList.add('bg-stone-400')
+  document.getElementById('new_btn').classList.remove('bg-stone-300')
+  document.getElementById('removed_btn').classList.add('bg-stone-400')
+  document.getElementById('removed_btn').classList.remove('bg-stone-300')
+  document.getElementById('done_btn').classList.add('bg-stone-400')
+  document.getElementById('done_btn').classList.remove('bg-stone-300')
 };
-
-
-
 function complete(index) {
-  let planInput=document.querySelectorAll("#planInput")
-  newEl={
-  title:  planInput[index].value,
-  isCompleted: false,
-  }
-  list.splice((index), 1, newEl)
   list[index].isCompleted = !list[index].isCompleted;
 console.log(list);
   updateDOM();
+}
+function newComplete(index) {
+  setTimeout(() => {
+    list[index].isCompleted = !list[index].isCompleted;
+    console.log(list);
+      updateDOM();
+  }, 3000);
 }
 let removedArr=[]
 function deleteTask(index) {
@@ -70,9 +77,7 @@ function removedPlan() {
 
     </div>`
   });
-
 }
-
 function clearTasks() {
   list.splice(0, list.length)
   todos.innerHTML = "";
@@ -83,7 +88,6 @@ function clearTasks() {
   saveTask()
   localStorage.clear()
 }
-
 function updateDOM() {
   todos.innerHTML = "";
   newTab.innerHTML = "";
@@ -98,44 +102,44 @@ function updateDOM() {
         ? "icon-checked text-orange"
         : "icon-checkbox text-gray-100"
     } text-[64px] text-orange"></span>
-            <input type="text" value="${el.title}" id="planInput" class="w-full bg-inherit outline-none text-3.5xl font-normal
-            ${
-              el.isCompleted ? "text-gray-200 line-through" : "text-dark"
-            }
-            "  ${el.isCompleted ? 'readonly' : input.focus()}>
-          </div>
-          <button class="group"  onclick="deleteTask(${index})">
+    <form>
+    <input type="text" value="${el.title}" oninput="keyInt(${index}, event)" id="input_plan" class="w-full bg-inherit outline-none text-3.5xl font-normal
+    ${
+      el.isCompleted ? "text-gray-200 line-through" : "text-dark"
+    }
+    "  ${el.isCompleted ? 'readonly' : input.focus()}>
+    </form>
+  </div>
+  <button class="group"  onclick="deleteTask(${index})">
+            
               <span class="icon-trash text-[32px] text-red opacity-30 hover:opacity-100 duration-300"></span>
           </button>
 
-          </div>
-          `;
-          
+          </div>`; 
         if (el.isCompleted==false) {
-          console.log(el);
-          
           newTab.innerHTML+=`
           <div
           class="py-3 flex items-center justify-between relative after:absolute after:right-6 after:left-[51px] after:h-px after:bg-blue after:bottom-0">
           <div class="flex items-center gap-2 ">
-              <span onclick="complete(${index})" class="cursor-pointer transition-color duration-300 ${
+              <span onclick="newComplete(${index})" class="cursor-pointer transition-color duration-300 ${
       el.isCompleted
         ? "icon-checked text-orange"
         : "icon-checkbox text-gray-100"
     } text-[64px] text-orange"></span>
-            <input type="text" value="${el.title}" id="planInput" class="w-full bg-inherit outline-none text-3.5xl font-normal
+    <form>
+            <input type="text" value="${el.title}" oninput="keyInt(${index})" class="w-full bg-inherit outline-none text-3.5xl font-normal
             ${
               el.isCompleted ? "text-gray-200 line-through" : "text-dark"
             }
             "  ${el.isCompleted ? 'readonly' : input.focus()}>
           </div>
           <button class="group"  onclick="deleteTask(${index})">
+          </form>
               <span class="icon-trash text-[32px] text-red opacity-30 hover:opacity-100 duration-300"></span>
           </button>
 
           </div>
-          `
-          
+          `  
         }else{
           doneTab.innerHTML+=`
           <div
@@ -150,17 +154,15 @@ function updateDOM() {
               <span class="icon-trash text-[32px] text-red opacity-30 hover:opacity-100 duration-300"></span>
           </button>
 
-          </div>
-          `
-        }
+          </div>`}
   });
   saveTask()
 }
-
-
-function openCity(cityName) {
-  if (cityName!=='todos') {
+function openPan(PlanName, index) {
+  if (PlanName!=='todos') {
     document.querySelector('.todos_clear_btn').classList.add('hidden')
+    document.getElementById('todo_btn').classList.add('bg-stone-400')
+  document.getElementById('todo_btn').classList.remove('bg-stone-300')
   }else{
     document.querySelector('.todos_clear_btn').classList.remove('hidden')
   document.querySelector('.todos_clear_btn').classList.add('block')
@@ -170,22 +172,20 @@ function openCity(cityName) {
   for (i = 0; i < x.length; i++) {
     x[i].style.display = "none";
   }
-  document.getElementById(cityName).style.display = "block";
-}
-function saveTask() {
+  let btns=document.querySelectorAll('.plan__case__btn')
+  for (let i = 0; i < btns.length; i++) {
+    btns[i].classList.add('bg-stone-400')
+    btns[i].classList.remove('bg-stone-300')
+    
+  }
+  document.getElementById(PlanName).style.display = "block";
+  document.getElementById(index).classList.remove('bg-stone-400')
+  document.getElementById(index).classList.add('bg-stone-300')
+}function saveTask() {
   localStorage.setItem("plan", JSON.stringify(list))
   localStorage.setItem("removed", JSON.stringify(removedArr))
-  localStorage.setItem("data", todos.innerHTML);
-  localStorage.setItem("removedData", removeTab.innerHTML)
-  localStorage.setItem("doneTab", doneTab.innerHTML)
-  localStorage.setItem("newTab", newTab.innerHTML)
-
 }
 function getTask() {
- todos.innerHTML= localStorage.getItem("data")
- removeTab.innerHTML=localStorage.getItem("removedData")
- doneTab.innerHTML=localStorage.getItem("doneTab")
- newTab.innerHTML=localStorage.getItem("newTab")
 let localPlan=JSON.parse(localStorage.getItem("plan"))
 localPlan.forEach(item => {
 list.push(item)
@@ -196,6 +196,8 @@ removedPlan.forEach(item => {
 });
 }
 getTask() 
+updateDOM()
+removedPlan() 
 
 
 
